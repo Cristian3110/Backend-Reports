@@ -1,0 +1,128 @@
+import { Router, Response } from "express";
+import { Reporte } from '../models/reporte.model';
+import { verificaToken } from "./middlewares/autenticacion";
+
+
+
+const reporteRoutes = Router();
+
+// Obtener Reporte Páginado
+reporteRoutes.get('/', [verificaToken], async (req: any, res: Response) =>{
+
+  // paginado (si no manda ninguna página por defecto aparecerá la 1)
+       let pagina = Number(req.query.pagina) || 1;
+       let skip = pagina - 1;
+       skip = skip *10;
+
+       // busqueda de todos los reportes creados
+       const ReportesTotales = await Reporte.find()
+                                     .sort({_id:-1})
+                                     .skip( skip )
+                                     .limit(10)
+                                     .populate('usuario','-password')
+                                     .exec() 
+
+       res.json({
+        ok: true,
+        pagina,
+        ReportesTotales
+       })
+});
+
+
+
+
+// Crear Reporte
+
+reporteRoutes.post('/', [verificaToken], (req: any, res: Response) =>{
+
+
+    const body = req.body;
+    body.usuario = req.usuario._id;
+
+    Reporte.create(body).then( async reporteDB =>{
+
+         await reporteDB.populate('usuario', '-password').execPopulate();
+     
+         res.json({
+          ok: true,
+          reporte: reporteDB
+         });
+
+    }).catch (err => {
+       res.json(err)
+    });
+
+});
+
+
+// Obtener reporte por Abonado
+
+reporteRoutes.get('/consulta/:abonadoID', [verificaToken], (req: any, res: Response) =>{            
+          
+     
+          const abonadoId = req.params.abonadoID;
+
+           Reporte.findOne({abonado: abonadoId}, (err, abonadoDB) => {
+                if (err){
+                         return res.json({
+                          ok:false,
+                          mensaje: 'Error en la petición, no existe abonado en la BD',
+                          err 
+                     });
+                } 
+                
+                if(!abonadoDB){
+                          res.json({
+                          ok:false,
+                          mensaje: 'El abonado no posee reporte'
+                     })
+                }
+                
+                if(abonadoDB){
+                         res.json({
+                         ok: true,
+                         Reporte: abonadoDB                    
+                    })
+                };         
+                
+           });    
+   });
+
+//    reporteRoutes.get('/consulta', [verificaToken], async (req: any, res: Response) =>{
+
+//      // paginado (si no manda ninguna página por defecto aparecerá la 1)
+//           let abonado = Number(req.query.abonado) || 0;
+//           let skip = abonado;
+//           skip = skip;
+   
+//           // busqueda de todos los reportes creados
+//           const ReportesTotales = await Reporte.find({skip})
+//                                         //.sort({abonado})
+//                                         .skip( skip )
+//                                         .limit(10)
+//                                         .populate('usuario','-password')
+//                                         .exec() 
+   
+//           res.json({
+//            ok: true,
+//            abonado,
+//            ReportesTotales
+//           })
+//    });
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export default reporteRoutes;

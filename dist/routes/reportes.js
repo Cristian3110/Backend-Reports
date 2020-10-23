@@ -72,22 +72,4 @@ reporteRoutes.get('/consulta/:abonadoID', [autenticacion_1.verificaToken], (req,
         ;
     });
 });
-//    reporteRoutes.get('/consulta', [verificaToken], async (req: any, res: Response) =>{
-//      // paginado (si no manda ninguna página por defecto aparecerá la 1)
-//           let abonado = Number(req.query.abonado) || 0;
-//           let skip = abonado;
-//           skip = skip;
-//           // busqueda de todos los reportes creados
-//           const ReportesTotales = await Reporte.find({skip})
-//                                         //.sort({abonado})
-//                                         .skip( skip )
-//                                         .limit(10)
-//                                         .populate('usuario','-password')
-//                                         .exec() 
-//           res.json({
-//            ok: true,
-//            abonado,
-//            ReportesTotales
-//           })
-//    });
 exports.default = reporteRoutes;

@@ -40,4 +40,4 @@ reporteSquema.pre('save', function (next) {
     this.created = new Date();
     next();
 });
-exports.Reporte = mongoose_1.model('Reporte', reporteSquema);
+exports.Reporte = mongoose_1.model('Reportes', reporteSquema);

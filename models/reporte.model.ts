@@ -58,4 +58,4 @@ interface IReporte extends Document{
 
 }
 
-export const Reporte = model<IReporte>('Reporte', reporteSquema);
+export const Reporte = model<IReporte>('Reportes', reporteSquema);

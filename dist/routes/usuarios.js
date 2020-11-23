@@ -62,6 +62,7 @@ userRoutes.post('/create', (req, res) => {
     }).catch(err => {
         res.json({
             ok: false,
+            mensaje: 'Este email ya se encuentra registrado',
             err
         });
     });

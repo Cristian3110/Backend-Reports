@@ -13,8 +13,8 @@ const express_1 = require("express");
 const reporte_model_1 = require("../models/reporte.model");
 const autenticacion_1 = require("./middlewares/autenticacion");
 const reporteRoutes = express_1.Router();
-// Obtener Reporte Páginado
-reporteRoutes.get('/', [autenticacion_1.verificaToken], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Obtener Reporte Páginado // antes del asyn va el verificaTokoen []
+reporteRoutes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginado (si no manda ninguna página por defecto aparecerá la 1)
     let pagina = Number(req.query.pagina) || 1;
     let skip = pagina - 1;
@@ -43,11 +43,16 @@ reporteRoutes.post('/', [autenticacion_1.verificaToken], (req, res) => {
             reporte: reporteDB
         });
     })).catch(err => {
-        res.json(err);
+        res.json({
+            ok: false,
+            mensaje: 'Este abonado ya posee reporte',
+            err,
+        });
     });
 });
 // Obtener reporte por Abonado
-reporteRoutes.get('/consulta/:abonadoID', [autenticacion_1.verificaToken], (req, res) => {
+reporteRoutes.get('/consulta/:abonadoID', (req, res) => {
+    //[verificaToken] después del abonado
     const abonadoId = req.params.abonadoID;
     reporte_model_1.Reporte.findOne({ abonado: abonadoId }, (err, abonadoDB) => {
         if (err) {

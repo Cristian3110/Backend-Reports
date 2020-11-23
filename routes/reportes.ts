@@ -1,13 +1,13 @@
 import { Router, Response } from "express";
 import { Reporte } from '../models/reporte.model';
-import { verificaToken } from "./middlewares/autenticacion";
+import { verificaToken } from './middlewares/autenticacion';
 
 
 
 const reporteRoutes = Router();
 
-// Obtener Reporte Páginado
-reporteRoutes.get('/', [verificaToken], async (req: any, res: Response) =>{
+// Obtener Reporte Páginado // antes del asyn va el verificaTokoen []
+reporteRoutes.get('/', async (req: any, res: Response) =>{
 
   // paginado (si no manda ninguna página por defecto aparecerá la 1)
        let pagina = Number(req.query.pagina) || 1;
@@ -50,7 +50,11 @@ reporteRoutes.post('/', [verificaToken], (req: any, res: Response) =>{
          });
 
     }).catch (err => {
-       res.json(err)
+       res.json({
+            ok:false,
+            mensaje: 'Este abonado ya posee reporte',
+            err,
+       })
     });
 
 });
@@ -58,8 +62,9 @@ reporteRoutes.post('/', [verificaToken], (req: any, res: Response) =>{
 
 // Obtener reporte por Abonado
 
-reporteRoutes.get('/consulta/:abonadoID', [verificaToken], (req: any, res: Response) =>{            
+reporteRoutes.get('/consulta/:abonadoID', (req: any, res: Response) =>{            
           
+     //[verificaToken] después del abonado
      
           const abonadoId = req.params.abonadoID;
 

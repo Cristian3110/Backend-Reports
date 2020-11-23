@@ -1,5 +1,8 @@
 import Server from './classes/server';
 import mongoose from 'mongoose';
+
+import cors from 'cors';
+
 import bodyParser from 'body-parser';
 
 import userRoutes from './routes/usuarios';
@@ -11,6 +14,10 @@ const server = new Server();
 // Body parser
 server.app.use(bodyParser.urlencoded({ extended: true}));
 server.app.use(bodyParser.json() );
+
+// configuración del CORDS
+server.app.use(cors({ origin: true, credentials:true}));
+
 
 // Rutas de mi aplicación
 server.app.use( '/user', userRoutes );

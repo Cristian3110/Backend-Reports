@@ -92,6 +92,7 @@ userRoutes.post('/create', ( req: Request, res: Response) =>{
      }).catch( err =>{
          res.json({
           ok:false,
+          mensaje: 'Este email ya se encuentra registrado',
           err
          });
      });

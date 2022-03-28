@@ -14,7 +14,7 @@ const server = new server_1.default();
 server.app.use(body_parser_1.default.urlencoded({ extended: true }));
 server.app.use(body_parser_1.default.json());
 // configuración del CORDS
-server.app.use(cors_1.default({ origin: true, credentials: true }));
+server.app.use((0, cors_1.default)({ origin: true, credentials: true }));
 // Rutas de mi aplicación
 server.app.use('/user', usuarios_1.default);
 server.app.use('/reportes', reportes_1.default);

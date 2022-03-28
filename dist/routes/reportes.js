@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const reporte_model_1 = require("../models/reporte.model");
 const autenticacion_1 = require("./middlewares/autenticacion");
-const reporteRoutes = express_1.Router();
+const reporteRoutes = (0, express_1.Router)();
 // Obtener Reporte Páginado // antes del asyn va el verificaTokoen []
 reporteRoutes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // paginado (si no manda ninguna página por defecto aparecerá la 1)
